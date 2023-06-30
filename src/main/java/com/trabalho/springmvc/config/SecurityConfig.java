@@ -27,6 +27,7 @@ public class SecurityConfig{
             .build();
     }
 
+    //define a criptografia usada e a classe que extende de UserDetailsService que vai gerenciar o login
     @Bean
     public DaoAuthenticationProvider getDaoAuthProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -35,6 +36,7 @@ public class SecurityConfig{
 		return daoAuthenticationProvider;
     }
 
+    //define criptografia na hora de verificar a senha no login
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
@@ -56,7 +58,7 @@ public class SecurityConfig{
             //.loginProcessingUrl("/perform_login") //caso queira uma lógica propia de login
             .defaultSuccessUrl("/user", true)
             .failureUrl("/login?error=true")
-            .failureHandler(new CustomErroLogin())
+            .failureHandler(new CustomErroLogin())//lógica propria se o login falhar
             .and()
             .logout()
             .deleteCookies("JSESSIONID");
