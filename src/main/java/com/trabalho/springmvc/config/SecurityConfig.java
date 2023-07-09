@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.trabalho.springmvc.filter.AcessLoginRegisterPage;
 
 @Configuration
 @EnableWebSecurity
@@ -46,21 +49,24 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf()
             .disable()
+            .addFilterAfter(new AcessLoginRegisterPage(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-            .antMatchers("/login").anonymous() //somente usuario não logado pode acessar
-            .antMatchers("/register").anonymous()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/register").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
             .loginPage("/login")
             .usernameParameter("email")
             .passwordParameter("senha")
-            //.loginProcessingUrl("/perform_login") //caso queira uma lógica propia de login
+            //.loginProcessingUrl("/perform_login") //caso queira uma lógica propria de login
             .defaultSuccessUrl("/user", true)
             .failureUrl("/login?error=true")
             .failureHandler(new CustomErroLogin())//lógica propria se o login falhar
+            .successHandler(new CustomSuccessLogin())
             .and()
             .logout()
+            .logoutSuccessHandler(new CustomLogoutHandler())
             .deleteCookies("JSESSIONID");
             //.logoutSuccessHandler(logoutSuccessHandler());
 

@@ -18,9 +18,9 @@ public class UsuarioDAO {
 		return usuarioRepository.save(usuario);
 	}
 
-    // public Optional<Usuario> findByEmail(String email){
-    //     return usuarioRepository.findByEmail(email);
-    // }
+    public Optional<Usuario> findByEmail(String email){
+        return usuarioRepository.findByEmail(email);
+    }
 
 	public Optional<Usuario> findById(Long id){
         return usuarioRepository.findById(id);
