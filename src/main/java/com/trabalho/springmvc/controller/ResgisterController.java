@@ -25,6 +25,9 @@ public class ResgisterController {
         model.addAttribute("user", new UsuarioForm());
         return "register";
     }
+
+    //BindingResult: objeto do Spring que contém o resultado da validação e vinculação e contém erros que podem ter ocorrido
+    //Quando o Spring vê @Valid, ele tenta encontrar o validador para o objeto que está sendo validado. O Spring seleciona automaticamente as anotações de validação se você tiver "orientado por anotação" ativado. O Spring então chama o validador e coloca todos os erros no BindingResulte adiciona o BindingResult ao modelo de exibição.
     @PostMapping
     public String cadastrar(@ModelAttribute("user") @Valid UsuarioForm usuario, BindingResult result){
         if (result.hasErrors()) {

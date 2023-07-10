@@ -31,10 +31,12 @@
                     <div class="mb-3">
                         <form:label path="nome" class="form-label">Nome</form:label>
                         <form:input type="text" path="nome" class="form-control"/>
+                        <form:errors path="nome" cssClass="text-danger"/></td>
                     </div>
                     <div class="mb-3">
                         <form:label path="telefone" class="form-label">Telefone</form:label>
                         <form:input type="tel" path="telefone" class="form-control"/>
+                        <form:errors path="telefone" cssClass="text-danger"/></td>
                     </div>
                     <div class="mb-3">
                         <form:label path="foto" class="form-label">Foto</form:label>

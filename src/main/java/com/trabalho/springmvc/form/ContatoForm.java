@@ -1,10 +1,14 @@
 package com.trabalho.springmvc.form;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class ContatoForm {
     private Long id;
+    @NotBlank(message = "email inválido")
     private String nome;
+    @NotBlank(message = "telefone inválido")
     private String telefone;
     private MultipartFile foto;
     
