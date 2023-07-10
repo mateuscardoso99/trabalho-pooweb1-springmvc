@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trabalho.springmvc.form.ContatoForm;
 import com.trabalho.springmvc.service.ContatoService;
+import com.trabalho.springmvc.utils.FileUtils;
 
 @Controller
 @RequestMapping(value = "/user/contato")
@@ -41,9 +42,12 @@ public class ContatoController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute("contato") @Valid ContatoForm contatoForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request){
+        FileUtils.validateFoto(contatoForm.getFoto(), bindingResult);
+
         if(bindingResult.hasErrors()){
             return "contato/cadastrar";
         }
+
         this.contatoService.salvar(contatoForm,request);
         redirectAttributes.addFlashAttribute("success", "contato cadastrado com sucesso");
         return "redirect:show";

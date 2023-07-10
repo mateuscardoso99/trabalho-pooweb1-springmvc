@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtils {
@@ -51,4 +54,54 @@ public class FileUtils {
         File file = new File(request.getServletContext().getRealPath("")+path);
         file.delete();
     }
+
+	public static void validateFoto(MultipartFile file, Errors errors){
+		List<String> mimeTypes = new ArrayList<String>(){{
+			add("image/gif");
+			add("image/jpeg");
+			add("image/svg+xml");
+			add("image/bmp");
+			add("image/png");
+			add("image/webp");
+		}};
+
+		if(!file.isEmpty()){
+			if(file.getSize() > 10485760){
+				errors.rejectValue("foto", "", "tamanho do arquivo muito grande");
+			}
+			if(!mimeTypes.contains(file.getContentType())){
+				errors.rejectValue("foto","", "tipo de arquivo inválido");
+			}
+		}
+	}
+
+	public static void validateDocumento(MultipartFile file, Errors errors){
+		List<String> mimeTypes = new ArrayList<String>(){{
+			add("image/gif");
+			add("image/jpeg");
+			add("image/svg+xml");
+			add("image/bmp");
+			add("image/png");
+			add("application/pdf");
+			add("application/x-sh");
+			add("text/css");
+			add("text/plain");
+			add("text/html");
+			add("application/x-sh");
+			add("application/java-archive");
+			add("text/javascript");
+			add("application/json");
+			add("application/x-httpd-php");
+		}};
+
+		if(file.isEmpty()){
+			errors.rejectValue("arquivo", "", "informe o arquivo");
+		}
+		if(file.getSize() > 10485760){
+			errors.rejectValue("arquivo", "", "tamanho do arquivo muito grande");
+		}
+		if(!mimeTypes.contains(file.getContentType())){
+			errors.rejectValue("arquivo","", "tipo de arquivo inválido");
+		}
+	}
 }

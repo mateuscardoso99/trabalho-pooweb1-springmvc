@@ -41,6 +41,7 @@
                     <div class="mb-3">
                         <form:label path="foto" class="form-label">Foto</form:label>
                         <form:input type="file" path="foto" class="form-control"/>
+                        <form:errors path="foto" cssClass="text-danger"/></td>
                     </div>
                     <button type="submit" name="action" class="btn btn-success" value="cadastrar">Salvar contato</button>
                 </form:form>
