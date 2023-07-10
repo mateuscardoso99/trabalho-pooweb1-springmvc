@@ -52,9 +52,9 @@
                   <c:when test="${documentos.size() > 0}">
                     <c:forEach items="${documentos}" var="doc">
                       <div class="col-md-6 text-left mt-5 mb-5">
-                        <iframe loading="lazy" title="preview" src="${pageContext.request.contextPath}/docs?name=${doc.arquivo}" width="100%" height="250"></iframe>
-                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/user/docs/file?idDoc=${doc.id}&action=apagar">Apagar</a>
-                        <a class="btn btn-success" href="${pageContext.request.contextPath}/user/docs/file?name=${doc.arquivo}&action=baixar">Baixar</a>
+                        <iframe loading="lazy" title="preview" src="${pageContext.request.contextPath}/user/docs/arquivo/${doc.arquivo}" width="100%" height="250"></iframe>
+                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/user/docs/apagar/${doc.id}">Apagar</a>
+                        <a class="btn btn-success" href="${pageContext.request.contextPath}/user/docs/download-arquivo/${doc.arquivo}">Baixar</a>
                       </div>
                     </c:forEach>
                   </c:when>

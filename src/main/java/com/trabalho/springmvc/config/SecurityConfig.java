@@ -70,7 +70,11 @@ public class SecurityConfig{
             .and()
             .logout()
             .deleteCookies("JSESSIONID")
-            .logoutSuccessHandler(new CustomLogoutHandler());
+            .logoutSuccessHandler(new CustomLogoutHandler())
+            .and()
+            .headers()
+            .frameOptions()
+            .sameOrigin();//renderizar iframes mesma origin
 
         return http.build();
     }

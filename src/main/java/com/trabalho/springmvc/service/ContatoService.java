@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,14 @@ import com.trabalho.springmvc.dao.ContatoDAO;
 import com.trabalho.springmvc.form.ContatoForm;
 import com.trabalho.springmvc.model.Contato;
 import com.trabalho.springmvc.model.Usuario;
-import com.trabalho.springmvc.utils.FileUpload;
+import com.trabalho.springmvc.utils.FileUtils;
 
 @Service
 public class ContatoService {
     @Autowired
     private ContatoDAO contatoDAO;
 
-	private static final String PATH = File.separator+"fotos_contato"+File.separator;
+	private static final String PATH = "fotos_contato"+File.separator;
 
 	public ContatoService(){
         this.contatoDAO = new ContatoDAO();
@@ -30,11 +31,16 @@ public class ContatoService {
 	@Transactional(rollbackFor = {Exception.class})
 	public void salvar(ContatoForm cform, HttpServletRequest request) {
 		try{
+			String fileName = null;
+
+			if(!cform.getFoto().isEmpty())
+				fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
+
 			Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
 			Contato contato = new Contato();
 			contato.setNome(cform.getNome());
 			contato.setTelefone(cform.getTelefone());
-			contato.setFoto(FileUpload.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH));
+			contato.setFoto(fileName);
 			contato.setUsuario(usuario);
 			this.contatoDAO.salvar(contato);
 		}
@@ -61,8 +67,17 @@ public class ContatoService {
 	}
 
 	@Transactional
-	public void deletar(Long id) {
-		Contato c = this.findById(id).orElseThrow();
+	public void deletar(HttpServletRequest request, HttpServletResponse response, String id) {
+		Contato c = this.findById(Long.valueOf(id)).orElseThrow();
+
+		if(c.getFoto() != null){
+			FileUtils.apagarArquivo(request, response, PATH + c.getFoto());
+		}
+
 		this.contatoDAO.deletar(c);
+	}
+
+	public void viewFoto(HttpServletRequest request, HttpServletResponse response, String fileName){
+		FileUtils.viewFile(request, response, PATH, fileName, false);
 	}
 }

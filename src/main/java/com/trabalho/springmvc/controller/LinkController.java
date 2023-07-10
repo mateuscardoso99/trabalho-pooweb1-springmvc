@@ -47,7 +47,7 @@ public class LinkController {
     }
 
     @RequestMapping(value = "/apagar", method = RequestMethod.POST)
-    public String update(@RequestParam("idLink") String id){
+    public String apagar(@RequestParam("idLink") String id){
         this.linkService.deletar(id);
         return "redirect:show";
     }

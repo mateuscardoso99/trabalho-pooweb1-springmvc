@@ -1,6 +1,7 @@
 package com.trabalho.springmvc.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.trabalho.springmvc.form.DocumentoForm;
 import com.trabalho.springmvc.service.DocumentoService;
@@ -40,8 +43,18 @@ public class DocumentoController {
     }
 
     @GetMapping("/apagar/{id}")
-    public String update(@PathVariable Long id){
-        this.documentoService.deletar(id);
-        return "redirect:show";
+    public ModelAndView apagar(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id){
+        this.documentoService.deletar(request, response, id);
+        return new ModelAndView("redirect:/user/docs/show");
+    }
+
+    @RequestMapping(value="/arquivo/{file}", method=RequestMethod.GET)
+    public void viewDoc(HttpServletRequest request, HttpServletResponse response, @PathVariable("file") String fileName) {
+        this.documentoService.viewDoc(request, response, fileName);
+    }
+
+    @RequestMapping(value="/download-arquivo/{file}", method=RequestMethod.GET)
+    public void downloadDoc(HttpServletRequest request, HttpServletResponse response, @PathVariable("file") String fileName) {
+        this.documentoService.downloadDoc(request, response, fileName);
     }
 }

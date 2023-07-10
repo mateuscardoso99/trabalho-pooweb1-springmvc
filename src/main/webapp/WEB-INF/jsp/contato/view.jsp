@@ -71,7 +71,7 @@
                       <div class="card m-auto" style="width: 18rem;">
                         <c:choose>
                           <c:when test="${not empty contato.foto}">
-                            <img src="${pageContext.request.contextPath}/fotos_contato?name=${contato.foto}" height="190px" alt="${contato.nome}">
+                            <img src="${pageContext.request.contextPath}/user/contato/foto/${contato.foto}" height="190px" alt="${contato.nome}">
                           </c:when>
                           <c:otherwise>
                             <img src="https://placehold.co/600x400/png" alt="${contato.nome}">
