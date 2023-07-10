@@ -12,22 +12,19 @@
                     <h2 class="text-center bg-light text-dark">criar conta</h2>
         
                     <div class="mb-3">
-                        <!-- <label for="nome" class="form-label">Nome</label>
-                        <input type="text" class="form-control" name="nome" id="nome"> -->
                         <form:label path="nome" class="form-label">Nome</form:label>
                         <form:input type="text" path="nome" class="form-control"/>
+                        <form:errors path="nome" cssClass="text-danger"/></td>
                     </div>
                     <div class="mb-3">
-                        <!-- <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email"> -->
                         <form:label path="email" class="form-label">Email</form:label>
                         <form:input type="email" path="email" class="form-control"/>
+                        <form:errors path="email" cssClass="text-danger"/></td>
                     </div>
                     <div class="mb-3">
-                        <!-- <label for="password" class="form-label">Senha</label>
-                        <input type="password" class="form-control" name="password" id="password"> -->
                         <form:label path="senha" class="form-label">Senha</form:label>
                         <form:input type="password" path="senha" class="form-control"/>
+                        <form:errors path="senha" cssClass="text-danger"/></td>
                     </div>
                     <button type="submit" class="btn btn-primary">salvar</button>
                 </form:form>
