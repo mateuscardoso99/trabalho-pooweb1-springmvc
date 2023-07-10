@@ -49,7 +49,7 @@ public class DocumentoService {
 	@Transactional
 	public void deletar(HttpServletRequest request, HttpServletResponse response, Long id) {
 		Documento doc = this.findById(id).orElseThrow();
-		FileUtils.apagarArquivo(request, response, PATH + doc.getArquivo());
+		FileUtils.apagarArquivo(request, PATH + doc.getArquivo());
 		this.documentoDAO.deletar(doc);
 	}
 

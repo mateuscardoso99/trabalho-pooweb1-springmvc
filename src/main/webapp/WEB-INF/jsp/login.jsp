@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
     <c:import url="./components/header.jsp" />
@@ -14,17 +15,17 @@
             </c:if>
 
             <div class="row mt-3">
-                <form action="login" method="post">
+                <form:form action="login" method="post" modelAttribute="login">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email">
+                        <form:label path="email" class="form-label">Email</form:label>
+                        <form:input type="text" path="email" class="form-control"/>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Senha</label>
-                        <input type="password" class="form-control" name="senha" id="senha">
+                        <form:label path="senha" class="form-label">Email</form:label>
+                        <form:input type="password" path="senha" class="form-control"/>
                     </div>
                     <button type="submit" class="btn btn-primary">Entrar</button>
-                </form>
+                </form:form>
             </div>
         </div>
         <c:import url="./components/footer.jsp" />

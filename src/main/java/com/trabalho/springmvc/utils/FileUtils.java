@@ -47,7 +47,7 @@ public class FileUtils {
 		}
 	}
 
-    public static void apagarArquivo(HttpServletRequest request, HttpServletResponse response, String path){
+    public static void apagarArquivo(HttpServletRequest request, String path){
         File file = new File(request.getServletContext().getRealPath("")+path);
         file.delete();
     }

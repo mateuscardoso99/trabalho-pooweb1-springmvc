@@ -71,7 +71,7 @@ public class ContatoService {
 		Contato c = this.findById(Long.valueOf(id)).orElseThrow();
 
 		if(c.getFoto() != null){
-			FileUtils.apagarArquivo(request, response, PATH + c.getFoto());
+			FileUtils.apagarArquivo(request, PATH + c.getFoto());
 		}
 
 		this.contatoDAO.deletar(c);
