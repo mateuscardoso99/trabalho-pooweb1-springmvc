@@ -12,10 +12,11 @@ import com.trabalho.springmvc.repository.DocumentoRepository;
 @Repository
 public class DocumentoDAO {
 
-	@Autowired DocumentoRepository documentoRepository;
+	@Autowired
+	private DocumentoRepository documentoRepository;
 
-    public List<Documento> findAll(Long idUsuario){
-        return documentoRepository.findAll();
+	public List<Documento> findAllByUser(Long idUsuario){
+        return documentoRepository.findAllByUser(idUsuario);
     }
 
     public Documento salvar(Documento documento) {
@@ -25,10 +26,6 @@ public class DocumentoDAO {
 	public Optional<Documento> findById(Long id){
         return documentoRepository.findById(id);
     }
-
-	public Documento atualizar(Documento documento) {
-		return this.salvar(documento);
-	}
 
 	public void deletar(Documento documento){
 		documentoRepository.delete(documento);

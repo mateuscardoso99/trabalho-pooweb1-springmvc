@@ -11,22 +11,25 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
-import com.trabalho.springmvc.dao.UsuarioDAO;
 import com.trabalho.springmvc.model.Usuario;
+import com.trabalho.springmvc.repository.UsuarioRepository;
 
+@Component
 public class CustomSuccessLogin implements AuthenticationSuccessHandler{
-
     @Autowired
-    private UsuarioDAO usuarioDAO;
+	private UsuarioRepository usuarioRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-        Optional<Usuario> usuario = usuarioDAO.findByEmail(authentication.getName());
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(authentication.getName());
         HttpSession session = request.getSession();
         if(session != null)
             session.setAttribute("usuario", usuario.get());
+
+        response.sendRedirect(request.getContextPath()+"/user");
     }
     
 }

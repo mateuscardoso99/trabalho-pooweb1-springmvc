@@ -22,6 +22,9 @@ public class SecurityConfig{
 
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Autowired
+    private CustomSuccessLogin customSuccessLogin;
      
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -60,15 +63,14 @@ public class SecurityConfig{
             .usernameParameter("email")
             .passwordParameter("senha")
             //.loginProcessingUrl("/perform_login") //caso queira uma lógica propria de login
-            .defaultSuccessUrl("/user", true)
-            .failureUrl("/login?error=true")
+            //.defaultSuccessUrl("/user", true)
+            //.failureUrl("/login?error=true")
             .failureHandler(new CustomErroLogin())//lógica propria se o login falhar
-            .successHandler(new CustomSuccessLogin())
+            .successHandler(customSuccessLogin)
             .and()
             .logout()
-            .logoutSuccessHandler(new CustomLogoutHandler())
-            .deleteCookies("JSESSIONID");
-            //.logoutSuccessHandler(logoutSuccessHandler());
+            .deleteCookies("JSESSIONID")
+            .logoutSuccessHandler(new CustomLogoutHandler());
 
         return http.build();
     }

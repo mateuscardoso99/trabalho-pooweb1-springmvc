@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -103,20 +104,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="${pageContext.request.contextPath}/user/contato/update" modelAttribute="contato" method="post">
-                      <input type="hidden" name="idContato" id="idContatoEditar">
+                    <form:form action="${pageContext.request.contextPath}/user/contato/update" modelAttribute="contato" method="post">
+                      <input type="hidden" name="id" id="idContatoEditar">
                       <div class="mb-3">
-                        <label for="nome" class="col-form-label">Nome:</label>
-                        <input type="text" class="form-control" name="nome" id="nome" placeholder="nome">
+                        <form:label path="nome" class="form-label">Nome:</form:label>
+                        <form:input type="text" path="nome" class="form-control" id="nome" placeholder="nome"/>
                       </div>
                       <div class="mb-3">
-                        <label for="telefone" class="col-form-label">Telefone:</label>
-                        <input type="tel" class="form-control" name="telefone" id="telefone" placeholder="telefone">
+                        <form:label path="telefone" class="form-label">Telefone</form:label>
+                        <form:input type="tel" path="telefone" class="form-control"/>
                       </div>
                       <div class="mb-3">
                           <button type="submit" name="action" class="btn btn-success" value="editar">Salvar contato</button>
                       </div>
-                    </form>
+                    </form:form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

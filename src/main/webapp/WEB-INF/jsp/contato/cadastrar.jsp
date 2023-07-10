@@ -27,21 +27,21 @@
             </div> -->
 
             <div class="row">
-                <form action="${pageContext.request.contextPath}/user/contato/gerenciar" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/user/contato/create" method="post" modelAttribute="contato" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input type="text" class="form-control" name="nome" id="nome">
+                        <form:label path="nome" class="form-label">Nome</form:label>
+                        <form:input type="text" path="nome" class="form-control"/>
                     </div>
                     <div class="mb-3">
-                        <label for="telefone" class="form-label">Telefone</label>
-                        <input type="tel" class="form-control" name="telefone" id="telefone">
+                        <form:label path="telefone" class="form-label">Telefone</form:label>
+                        <form:input type="tel" path="telefone" class="form-control"/>
                     </div>
                     <div class="mb-3">
-                        <label for="foto" class="form-label">Foto</label>
-                        <input type="file" class="form-control" name="foto" id="foto">
+                        <form:label path="foto" class="form-label">Foto</form:label>
+                        <form:input type="file" path="foto" class="form-control"/>
                     </div>
                     <button type="submit" name="action" class="btn btn-success" value="cadastrar">Salvar contato</button>
-                </form>
+                </form:form>
             </div>
         </div>
 

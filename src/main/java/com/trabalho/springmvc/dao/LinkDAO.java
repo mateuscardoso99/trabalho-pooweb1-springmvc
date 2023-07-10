@@ -15,8 +15,8 @@ public class LinkDAO {
 	private LinkRepository linkRepository;
 
 
-    public List<Link> findAll(){
-        return linkRepository.findAll();
+    public List<Link> findAllByUser(Long idUsuario){
+        return linkRepository.findAllByUser(idUsuario);
     }
 
     public void salvar(Link l) {

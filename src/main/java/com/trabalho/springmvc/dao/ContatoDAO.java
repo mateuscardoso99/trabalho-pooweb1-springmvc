@@ -15,8 +15,8 @@ public class ContatoDAO {
 	@Autowired
 	private ContatoRepository contatoRepository;
 
-    public List<Contato> findAll(){
-		return contatoRepository.findAll();
+    public List<Contato> findAllByUser(Long idUsuario){
+		return contatoRepository.findAllByUser(idUsuario);
     }
 
     public void salvar(Contato c) {
@@ -26,10 +26,6 @@ public class ContatoDAO {
 	public Optional<Contato> findById(Long id){
         return contatoRepository.findById(id);
     }
-
-	public void atualizar(Contato c) {
-		contatoRepository.save(c);
-	}
 
 	public void deletar(Contato c){
 		contatoRepository.delete(c);

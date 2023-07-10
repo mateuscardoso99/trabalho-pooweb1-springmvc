@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .mvn
+
+/src/main/webapp/fotos_contato
+/src/main/webapp/docs
