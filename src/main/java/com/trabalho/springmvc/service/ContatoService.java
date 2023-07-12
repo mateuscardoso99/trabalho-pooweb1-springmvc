@@ -1,6 +1,7 @@
 package com.trabalho.springmvc.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,17 +45,29 @@ public class ContatoService {
 			contato.setUsuario(usuario);
 			this.contatoDAO.salvar(contato);
 		}
-		catch(Exception e){
+		catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 
 	@Transactional
 	public void atualizar(ContatoForm cform, HttpServletRequest request) {
-		Contato contato = this.findById(cform.getId()).orElseThrow();
-		contato.setNome(cform.getNome());
-		contato.setTelefone(cform.getTelefone());
-		this.contatoDAO.salvar(contato);
+		try{
+			Contato contato = this.findById(cform.getId()).orElseThrow();
+
+			if(!cform.getFoto().isEmpty()){
+				FileUtils.apagarArquivo(request, PATH + contato.getFoto());
+				String fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
+				contato.setFoto(fileName);
+			}
+			
+			contato.setNome(cform.getNome());
+			contato.setTelefone(cform.getTelefone());
+			this.contatoDAO.salvar(contato);
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
     public Optional<Contato> findById(Long id) {

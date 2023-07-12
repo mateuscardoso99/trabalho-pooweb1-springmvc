@@ -56,6 +56,8 @@ public class ContatoController {
     //redirectAttributes.addFlashAttribute: (flashMessage) addFlashAttribute() armazena os atributos em um flashmap (que é mantido internamente nos usuários sessione removido assim que a próxima solicitação redirecionada é atendida)
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(@ModelAttribute("contato") @Valid ContatoForm contatoForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request){
+        FileUtils.validateFoto(contatoForm.getFoto(), bindingResult);
+        
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:show";

@@ -75,7 +75,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form:form action="${pageContext.request.contextPath}/user/contato/update" modelAttribute="contato" method="post">
+                    <form:form action="${pageContext.request.contextPath}/user/contato/update" modelAttribute="contato" method="post" enctype="multipart/form-data">
                       <input type="hidden" name="id" id="idContatoEditar">
                       <div class="mb-3">
                         <form:label path="nome" class="form-label">Nome:</form:label>
@@ -84,6 +84,10 @@
                       <div class="mb-3">
                         <form:label path="telefone" class="form-label">Telefone</form:label>
                         <form:input type="tel" path="telefone" class="form-control"/>
+                      </div>
+                      <div class="mb-3">
+                        <form:label path="foto" class="form-label">Alterar Foto</form:label>
+                        <form:input type="file" path="foto" class="form-control"/>
                       </div>
                       <div class="mb-3">
                           <button type="submit" name="action" class="btn btn-success" value="editar">Salvar contato</button>

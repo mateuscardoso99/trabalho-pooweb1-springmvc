@@ -17,8 +17,10 @@ public class CustomLogoutHandler extends SimpleUrlLogoutSuccessHandler implement
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
         HttpSession session = request.getSession();
-        if(session != null)
+        if(session != null){
             session.removeAttribute("usuario");
+            session.invalidate();
+        }
         response.sendRedirect(request.getContextPath()+"/login");
         super.onLogoutSuccess(request, response, authentication);
     }
