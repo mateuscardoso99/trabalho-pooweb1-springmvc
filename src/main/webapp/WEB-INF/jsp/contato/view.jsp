@@ -17,6 +17,14 @@
               </div>
             </c:if>
 
+            <c:if test="${not empty erro}">
+              <div class="row mb-3">
+                <div class="alert alert-danger" role="alert">
+                  ${erro}
+                </div>
+              </div>
+            </c:if>
+
             <c:if test="${not empty errors}">
               <div class="row mb-3">
                   <div class="alert alert-danger" role="alert">
