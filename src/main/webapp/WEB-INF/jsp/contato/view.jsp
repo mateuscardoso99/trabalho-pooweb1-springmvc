@@ -32,6 +32,10 @@
               <div class="col text-center">
                 <a class="btn btn-primary" href="${pageContext.request.contextPath}/user/contato/create">novo contato</a>
               </div>
+
+              <div class="col text-center">
+                <a class="btn btn-success" href="${pageContext.request.contextPath}/user/contato/exportar">exportar contatos</a>
+              </div>
             </div>
 
             <div class="row">

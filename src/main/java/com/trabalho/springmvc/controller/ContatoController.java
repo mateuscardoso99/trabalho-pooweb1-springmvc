@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.trabalho.springmvc.form.ContatoForm;
 import com.trabalho.springmvc.service.ContatoService;
 import com.trabalho.springmvc.utils.FileUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
 @RequestMapping(value = "/user/contato")
@@ -57,7 +59,7 @@ public class ContatoController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(@ModelAttribute("contato") @Valid ContatoForm contatoForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request){
         FileUtils.validateFoto(contatoForm.getFoto(), bindingResult);
-        
+
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:show";
@@ -78,5 +80,11 @@ public class ContatoController {
     public void viewFoto(HttpServletRequest request, HttpServletResponse response, @PathVariable("file") String fileName) {
         this.contatoService.viewFoto(request, response, fileName);
     }
+
+    @GetMapping(value="exportar")
+    public void exportarContatos(HttpServletRequest request, HttpServletResponse response) {
+        this.contatoService.exportarCSV(request, response);
+    }
+    
     
 }

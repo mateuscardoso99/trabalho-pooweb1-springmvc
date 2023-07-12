@@ -1,9 +1,14 @@
 package com.trabalho.springmvc.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -92,5 +97,54 @@ public class ContatoService {
 
 	public void viewFoto(HttpServletRequest request, HttpServletResponse response, String fileName){
 		FileUtils.viewFile(request, response, PATH, fileName, false);
+	}
+
+	public void exportarCSV(HttpServletRequest request, HttpServletResponse response){
+		var usuario = (Usuario) request.getSession().getAttribute("usuario");
+		List<Contato> contatos = this.contatoDAO.findAllByUser(usuario.getId());
+		List<String[]> rows = contatos.stream().map(c -> new String[]{ c.getNome(),c.getTelefone() }).toList();
+
+		try {
+			File csvOutputFile = File.createTempFile("contatos.csv",".csv");//cria arquivo temporário pra não deixar salvo no disco
+			PrintWriter pw = new PrintWriter(csvOutputFile);
+
+			rows.stream().map(this::convertToCSV).forEach(pw::println);
+			pw.close();
+
+			response.setContentType("text/csv");
+			response.addHeader("Content-Disposition", "attachment; filename=contatos.csv");
+        	response.setContentLength((int)csvOutputFile.length());
+		
+			FileInputStream fileInputStream = new FileInputStream(csvOutputFile);
+			OutputStream outputStream = response.getOutputStream();
+
+			byte[] buffer = new byte[4096];
+        	int bytesRead = -1;
+
+			while((bytesRead = fileInputStream.read(buffer)) != -1){
+				outputStream.write(buffer,0,bytesRead);
+			}
+
+			fileInputStream.close();
+        	outputStream.close();
+
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	private String convertToCSV(String[] data) {
+		return Stream.of(data)
+		.map(this::escapeSpecialCharacters)
+		.collect(Collectors.joining(";"));
+	}
+
+	private String escapeSpecialCharacters(String data) {
+		String escapedData = data.replaceAll("\\R", " ");
+		if (data.contains(";") || data.contains("\"") || data.contains("'")) {
+			data = data.replace("\"", "\"\"");
+			escapedData = "\"" + data + "\"";
+		}
+		return escapedData;
 	}
 }
