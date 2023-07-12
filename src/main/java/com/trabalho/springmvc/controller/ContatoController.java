@@ -66,8 +66,9 @@ public class ContatoController {
     }
 
     @RequestMapping(value = "/apagar", method = RequestMethod.POST)
-    public String apagar(HttpServletRequest request, HttpServletResponse response, @RequestParam("idContato") String id){
+    public String apagar(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam("idContato") String id){
         this.contatoService.deletar(request, response, id);
+        redirectAttributes.addFlashAttribute("success", "contato removido com sucesso");
         return "redirect:show";
     }
 

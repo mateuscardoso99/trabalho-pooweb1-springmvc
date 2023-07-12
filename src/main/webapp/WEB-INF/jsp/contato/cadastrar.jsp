@@ -16,16 +16,7 @@
                     </ol>
                   </nav>
             </div>
-
-            <!-- <div class="row mb-3">
-                <c:if test="${not empty requestScope.error}">
-                    <div class="alert alert-danger" role="alert">
-                        ${requestScope.error}
-                    </div>
-                    <c:set var="error" scope="request" value=""></c:set>
-                </c:if>
-            </div> -->
-
+            
             <div class="row">
                 <form:form action="${pageContext.request.contextPath}/user/contato/create" method="post" modelAttribute="contato" enctype="multipart/form-data">
                     <div class="mb-3">

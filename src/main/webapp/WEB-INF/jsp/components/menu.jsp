@@ -11,7 +11,8 @@
           <security:authorize access="isAuthenticated()">
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/user">
-                <security:authentication property="principal.username" />
+                <!-- <security:authentication property="principal.username" /> -->
+                ${sessionScope.usuario.nome}
               </a>
             </li>
             <li class="nav-item">

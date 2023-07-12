@@ -47,12 +47,32 @@ public class DocumentoController {
             return "redirect:show";
         }
         this.documentoService.salvar(documentoForm,request);
+        redirectAttributes.addFlashAttribute("success", "arquivo salvo com sucesso");
         return "redirect:show";
     }
 
+    @PostMapping("/update")
+    public ModelAndView update(
+        @ModelAttribute("documento") DocumentoForm documentoForm, 
+        BindingResult bindingResult,
+        HttpServletRequest request,
+        RedirectAttributes redirectAttributes
+    ){
+        FileUtils.validateDocumento(documentoForm.getArquivo(), bindingResult);
+        
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return new ModelAndView("redirect:show");
+        }
+        this.documentoService.update(documentoForm, request);
+        redirectAttributes.addFlashAttribute("success", "documento atualizado com sucesso");
+        return new ModelAndView("redirect:/user/docs/show");
+    }
+
     @GetMapping("/apagar/{id}")
-    public ModelAndView apagar(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id){
-        this.documentoService.deletar(request, response, id);
+    public ModelAndView apagar(HttpServletRequest request, RedirectAttributes redirectAttributes, @PathVariable("id") Long id){
+        this.documentoService.deletar(request, id);
+        redirectAttributes.addFlashAttribute("success", "arquivo removido com sucesso");
         return new ModelAndView("redirect:/user/docs/show");
     }
 

@@ -23,8 +23,12 @@ public class DocumentoDAO {
 		return documentoRepository.save(documento);
 	}
 
-	public Optional<Documento> findById(Long id){
-        return documentoRepository.findById(id);
+	public Optional<Documento> findById(Long id, Long userId){
+        return documentoRepository.find(id, userId);
+    }
+
+	public Optional<Documento> findByFileName(String filename, Long userId){
+        return documentoRepository.findByFileName(filename, userId);
     }
 
 	public void deletar(Documento documento){

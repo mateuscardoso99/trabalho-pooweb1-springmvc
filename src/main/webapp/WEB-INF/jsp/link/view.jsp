@@ -9,53 +9,24 @@
         <c:import url="../components/menu.jsp" />
 
         <div class="container">
-            <!-- <c:if test="${not empty sessionScope.success}">
+            <c:if test="${not empty success}">
               <div class="row mb-3">
                 <div class="alert alert-success" role="alert">
-                  ${sessionScope.success}
+                  ${success}
                 </div>
-                <c:set var="success" scope="session" value=""></c:set>
               </div>
             </c:if>
 
-            <c:if test="${not empty sessionScope.error}">
+            <c:if test="${not empty errors}">
               <div class="row mb-3">
                   <div class="alert alert-danger" role="alert">
-                      ${sessionScope.error}
+                    <c:forEach items="${errors}" var="e">
+                        <span class="d-block">${e.defaultMessage}</span>
+                      </c:forEach>
                   </div>
-                  <c:set var="error" scope="session" value=""></c:set>
+                  <c:set var="errors" value=""></c:set>
               </div>
             </c:if>
-
-            <c:if test="${not empty sessionScope.validationErrors}">
-
-              <c:if test="${not empty sessionScope.validationErrors.id}">
-                <div class="row mb-3">
-                  <c:forEach items="${sessionScope.validationErrors.id}" var="error">
-                    <div class="alert alert-danger" role="alert">${error}</div>
-                  </c:forEach>
-                </div>
-              </c:if>
-
-              <c:if test="${not empty sessionScope.validationErrors.url}">
-                <div class="row mb-3">
-                  <c:forEach items="${sessionScope.validationErrors.url}" var="error">
-                    <div class="alert alert-danger" role="alert">${error}</div>
-                  </c:forEach>
-                </div>
-              </c:if>
-
-              <c:if test="${not empty sessionScope.validationErrors.descricao}">
-                <div class="row mb-3">
-                  <c:forEach items="${sessionScope.validationErrors.descricao}" var="error">
-                    <div class="alert alert-danger" role="alert">${error}</div>
-                  </c:forEach>
-                </div>
-              </c:if>
-
-            </c:if> -->
-
-            <!-- <c:set var="validationErrors" scope="session" value=""></c:set> -->
 
             <div class="row m-3">
               <div class="col text-center">

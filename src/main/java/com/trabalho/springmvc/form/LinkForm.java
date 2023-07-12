@@ -1,8 +1,16 @@
 package com.trabalho.springmvc.form;
 
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.URL;
+
 public class LinkForm {
     private Long id;
+
+    @NotBlank(message = "URL vazia")
+    @URL(message = "URL inválida")
     private String url;
+
     private String descricao;
     
     public Long getId() {

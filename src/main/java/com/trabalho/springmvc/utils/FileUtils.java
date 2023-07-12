@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtils {
     public static String saveFile(MultipartFile multipartFile, String folder)throws IOException{
-        String fileName  = multipartFile.getOriginalFilename();
+        String fileName  =  UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename().replaceAll("[^a-zA-Z0-9\\.\\-]", "");
         File pathFile = new File(folder);
 
         if(!pathFile.exists()){
@@ -66,7 +67,7 @@ public class FileUtils {
 		}};
 
 		if(!file.isEmpty()){
-			if(file.getSize() > 10485760){
+			if(file.getSize() > 10485760){ //10MB
 				errors.rejectValue("foto", "", "tamanho do arquivo muito grande");
 			}
 			if(!mimeTypes.contains(file.getContentType())){

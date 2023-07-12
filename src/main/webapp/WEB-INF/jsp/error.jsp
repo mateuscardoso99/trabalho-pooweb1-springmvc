@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>inicio</h1>
+    <p>${erro}</p>
 </body>
 </html>
