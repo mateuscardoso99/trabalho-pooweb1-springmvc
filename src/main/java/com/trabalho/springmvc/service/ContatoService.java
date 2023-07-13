@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,9 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import com.trabalho.springmvc.dao.ContatoDAO;
+import com.trabalho.springmvc.form.AtualizarContatoForm;
 import com.trabalho.springmvc.form.ContatoForm;
+import com.trabalho.springmvc.form.DeleteContatoForm;
 import com.trabalho.springmvc.model.Contato;
 import com.trabalho.springmvc.model.Usuario;
 import com.trabalho.springmvc.utils.FileUtils;
@@ -29,26 +33,38 @@ public class ContatoService {
     private ContatoDAO contatoDAO;
 
 	private static final String PATH = "fotos_contato"+File.separator;
+	private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
 	public ContatoService(){
         this.contatoDAO = new ContatoDAO();
     }
 
 	@Transactional(rollbackFor = {Exception.class})
-	public void salvar(ContatoForm cform, HttpServletRequest request) {
+	public void salvar(ContatoForm cform, HttpServletRequest request, BindingResult bindingResult) {
 		try{
-			String fileName = null;
+			FileUtils.validateFoto(cform.getFoto(), bindingResult);
 
-			if(!cform.getFoto().isEmpty())
-				fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
+			if(cform.getNome() == null || cform.getNome().equals("")){
+				bindingResult.rejectValue("nome", null, "nome invalido");
+			}
+			if(cform.getTelefone() == null || cform.getTelefone().equals("")){
+				bindingResult.rejectValue("telefone", null, "telefone invalido");
+			}
 
-			Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-			Contato contato = new Contato();
-			contato.setNome(cform.getNome());
-			contato.setTelefone(cform.getTelefone());
-			contato.setFoto(fileName);
-			contato.setUsuario(usuario);
-			this.contatoDAO.salvar(contato);
+			if(!bindingResult.hasErrors()){
+				String fileName = null;
+
+				if(!cform.getFoto().isEmpty())
+					fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
+
+				Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+				Contato contato = new Contato();
+				contato.setNome(cform.getNome());
+				contato.setTelefone(cform.getTelefone());
+				contato.setFoto(fileName);
+				contato.setUsuario(usuario);
+				this.contatoDAO.salvar(contato);
+			}
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -56,19 +72,38 @@ public class ContatoService {
 	}
 
 	@Transactional
-	public void atualizar(ContatoForm cform, HttpServletRequest request) {
+	public void atualizar(AtualizarContatoForm cform, HttpServletRequest request, BindingResult bindingResult) {
 		try{
-			Contato contato = this.findById(cform.getId()).orElseThrow();
-
-			if(!cform.getFoto().isEmpty()){
-				FileUtils.apagarArquivo(request, PATH + contato.getFoto());
-				String fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
-				contato.setFoto(fileName);
+			FileUtils.validateFoto(cform.getFoto(), bindingResult);
+			
+			if(!pattern.matcher(cform.getId()).matches()){
+				bindingResult.rejectValue("id", null, "valor invalido");
+			}
+			if(cform.getNome() == null || cform.getNome().equals("")){
+				bindingResult.rejectValue("nome", null, "nome invalido");
+			}
+			if(cform.getTelefone() == null || cform.getTelefone().equals("")){
+				bindingResult.rejectValue("telefone", null, "telefone invalido");
 			}
 			
-			contato.setNome(cform.getNome());
-			contato.setTelefone(cform.getTelefone());
-			this.contatoDAO.salvar(contato);
+			if(!bindingResult.hasErrors()){
+				Optional<Contato> contato = this.findById(Long.valueOf(cform.getId()));
+
+				if(!contato.isPresent()){
+					bindingResult.rejectValue("id", null, "contato não encontrado");
+					return;
+				}
+
+				if(!cform.getFoto().isEmpty()){
+					FileUtils.apagarArquivo(request, PATH + contato.get().getFoto());
+					String fileName = FileUtils.saveFile(cform.getFoto(), request.getServletContext().getRealPath("")+PATH);
+					contato.get().setFoto(fileName);
+				}
+				
+				contato.get().setNome(cform.getNome());
+				contato.get().setTelefone(cform.getTelefone());
+				this.contatoDAO.salvar(contato.get());
+			}
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -85,14 +120,25 @@ public class ContatoService {
 	}
 
 	@Transactional
-	public void deletar(HttpServletRequest request, HttpServletResponse response, String id) {
-		Contato c = this.findById(Long.valueOf(id)).orElseThrow();
-
-		if(c.getFoto() != null){
-			FileUtils.apagarArquivo(request, PATH + c.getFoto());
+	public void deletar(HttpServletRequest request, HttpServletResponse response, DeleteContatoForm deleteContatoForm, BindingResult bindingResult) {
+		if(!pattern.matcher(deleteContatoForm.getId()).matches()){
+			bindingResult.rejectValue("id", null, "valor invalido");
 		}
 
-		this.contatoDAO.deletar(c);
+		if(!bindingResult.hasErrors()){
+			Optional<Contato> c = this.findById(Long.valueOf(deleteContatoForm.getId()));
+
+			if(!c.isPresent()){
+				bindingResult.rejectValue("id", null, "contato não encontrado");
+				return;
+			}
+
+			if(c.get().getFoto() != null){
+				FileUtils.apagarArquivo(request, PATH + c.get().getFoto());
+			}
+
+			this.contatoDAO.deletar(c.get());
+		}
 	}
 
 	public void viewFoto(HttpServletRequest request, HttpServletResponse response, String fileName){

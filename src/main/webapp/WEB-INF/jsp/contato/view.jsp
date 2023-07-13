@@ -127,10 +127,10 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form action="${pageContext.request.contextPath}/user/contato/apagar" method="post">
-                      <input type="hidden" name="idContato" id="idContatoApagar">
+                    <form:form action="${pageContext.request.contextPath}/user/contato/apagar" method="post" modelAttribute="deleteContato">
+                      <form:input path="id" type="hidden" name="id" id="idContatoApagar"/>
                       <button type="submit" class="btn btn-danger" name="action" value="apagar">Apagar contato</button>
-                    </form>
+                    </form:form>
                   </div>
                 </div>
               </div>

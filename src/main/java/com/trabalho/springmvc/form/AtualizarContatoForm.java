@@ -2,7 +2,8 @@ package com.trabalho.springmvc.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ContatoForm {
+public class AtualizarContatoForm {
+    private String id;
     private String nome;
     private String telefone;
     private MultipartFile foto;
@@ -25,6 +26,10 @@ public class ContatoForm {
     public void setFoto(MultipartFile foto) {
         this.foto = foto;
     }
-
-    
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
 }
